@@ -40,6 +40,64 @@ public class TestScript extends AbstractScript {
     Random rand = new Random();
     int upperbound = 100;
     int lastTinMined = 99;
+    
+    //final GameObject doorToCombatArea = GameObjects.closest(9718);
+
+    private Player player(){
+        return Players.getLocal();
+    }
+
+    private void turnCameraDirectionPlayerIsFacing(Player player){
+
+        if(player.getFacingDirection().equals(Direction.NORTH)){
+            //Handle turning camera forward same direction as currently facing NORTH
+            Logger.log("Turning camera to direction player is facing: "+player.getFacingDirection());
+            Camera.rotateToTile(new Tile(player.getX(),player.getY()+2,player.getZ()));
+            Sleep.sleepUntil(()->player().getFacingDirection().equals(Direction.NORTH),700,1200);
+        }
+        if(player.getFacingDirection().equals(Direction.SOUTH)){
+            //Handle turning camera forward same direction as currently facing SOUTH
+            Logger.log("Turning camera to direction player is facing: "+player.getFacingDirection());
+            Camera.rotateToTile(new Tile(player.getX(),player.getY()-2,player.getZ()));
+            Sleep.sleepUntil(()->player().getFacingDirection().equals(Direction.SOUTH),700,1200);
+        }
+        if(player.getFacingDirection().equals(Direction.EAST)){
+            //Handle turning camera forward same direction as currently facing EAST
+            Logger.log("Turning camera to direction player is facing: "+player.getFacingDirection());
+            Camera.rotateToTile(new Tile(player.getX()+2,player.getY(),player.getZ()));
+            Sleep.sleepUntil(()->player().getFacingDirection().equals(Direction.EAST),700,1200);
+        }
+        if(player.getFacingDirection().equals(Direction.WEST)){
+            //Handle turning camera forward same direction as currently facing WEST
+            Logger.log("Turning camera to direction player is facing: "+player.getFacingDirection());
+            Camera.rotateToTile(new Tile(player.getX()-2,player.getY(),player.getZ()));
+            Sleep.sleepUntil(()->player().getFacingDirection().equals(Direction.WEST),700,1200);
+        }
+    }
+
+    private GameObject searchForNearestGameObjectWithName(String name, Tile tileObjectIsLocatedOn){
+        return GameObjects.closest(new Filter<GameObject>() {
+            @Override
+            public boolean match(GameObject gameObject1) {
+                return gameObject1 != null && gameObject1.getName().equals(name) && gameObject1.getActions().length > 0 && gameObject1.getTile().equals(tileObjectIsLocatedOn);
+            }
+        });
+    }
+
+    private NPC searchForNearestNPCWithName(String name){
+        return NPCs.closest(new Filter<NPC>() {
+            @Override
+            public boolean match(NPC npc) {
+                return npc != null && npc.getName().equalsIgnoreCase(name) && npc.getActions().length > 0;
+            }
+        });
+    }
+    private void turnToEntity(Entity entity){
+        if(!entity.isOnScreen()){ //If Entity is not on the Screen turn the camera to face it
+            Logger.log("Turning camera to face: "+entity.getName()+" Located at position: "+entity.getCenterPoint());
+            Camera.rotateToEntity(entity);
+        }
+    }
     private void mineOre(Tile oreLocation, Tile oreToMineLocation1,Tile oreToMineLocation2){
         if(oreLocation.distance()>4 && !localPlayer.isAnimating() && oreLocation.distance()<10){
             Logger.log( "Distance to correct tile: "+oreLocation.distance());
