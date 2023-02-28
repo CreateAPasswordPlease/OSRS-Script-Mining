@@ -6,6 +6,7 @@ import org.dreambot.api.input.mouse.destination.AbstractMouseDestination;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
+import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.filter.Filter;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.GameObjects;
@@ -204,19 +205,22 @@ public class TestScript extends AbstractScript {
     public int onLoop() {
 
 
-
+        if(Dialogues.canContinue()){
+            Dialogues.continueDialogue();
+            Sleep.sleep(600,1100);
+        }
         if(!gh.cameraCheck(0,0,0,235,850)){gh.autoSetCamera();}
-        if(!Inventory.isFull()){mineOre(LocationConstants.F2PMININGIRON1,new Tile(3286,3369,0),new Tile(3285,3368,0));}
+        if(!Inventory.isFull()){mineOre(LocationConstants.F2PMININGCOPPERTILE2,new Tile(3289,3363,0),new Tile(3290,3362,0));}
         if(Inventory.isFull()){
-//            dropOre();
-                gh.walkToClosestBank();
-                Bank.open();
-                if(Bank.isOpen()){
-                    Sleep.sleep(600,2000);
-                    Bank.depositAllItems();
-                    Sleep.sleep(800,2000);
-                    Bank.close();
-                }
+            dropOre();
+//                gh.walkToClosestBank();
+//                Bank.open();
+//                if(Bank.isOpen()){
+//                    Sleep.sleep(600,2000);
+//                    Bank.depositAllItems();
+//                    Sleep.sleep(800,2000);
+//                    Bank.close();
+//                }
             }
 
 //        ScriptManager.getScriptManager().isRunning() &&

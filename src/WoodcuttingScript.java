@@ -1,6 +1,7 @@
 import org.dreambot.api.input.Mouse;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
+import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Tile;
@@ -13,6 +14,7 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.interactive.Player;
 
+import java.awt.*;
 import java.util.Random;
 
 @ScriptManifest(name = "Woodcutting Script v1.01",
@@ -52,6 +54,9 @@ public class WoodcuttingScript extends AbstractScript {
             dropLogs();
         }
         if(!player().isAnimating() && !player().isInCombat()){
+            if(Dialogues.canContinue()){
+                Dialogues.continueDialogue();
+            }
             gh.turnToEntity(GameObjects.closest("Willow"));
             Mouse.click(GameObjects.closest("Willow"));
             Sleep.sleep(400,900);

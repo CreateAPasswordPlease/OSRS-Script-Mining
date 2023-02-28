@@ -142,6 +142,7 @@ public class GenericHelper {
     }
     public void walkToLocation(Area location){
         Tile randomTileFromLocation = location.getCenter();
+//        turnCameraDirectionPlayerIsFacing(Players.getLocal());
         if(randomTileFromLocation.distance()>5 && Walking.shouldWalk()){
             Walking.walk(randomTileFromLocation);
         }
