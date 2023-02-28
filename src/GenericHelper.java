@@ -1,13 +1,16 @@
 import org.dreambot.api.input.Mouse;
 import org.dreambot.api.methods.container.impl.bank.Bank;
+import org.dreambot.api.methods.filter.Filter;
 import org.dreambot.api.methods.input.Camera;
+import org.dreambot.api.methods.interactive.GameObjects;
+import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.*;
 import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
-import org.dreambot.api.wrappers.interactive.Entity;
-import org.dreambot.api.wrappers.interactive.SceneObject;
+import org.dreambot.api.wrappers.interactive.*;
+import org.dreambot.api.wrappers.interactive.util.Direction;
 
 
 public class GenericHelper {
@@ -73,6 +76,55 @@ public class GenericHelper {
 //                    Mouse.click();
 //                }
             }
+        }
+    }
+    public void turnCameraDirectionPlayerIsFacing(Player player){
+
+        if(player.getFacingDirection().equals(Direction.NORTH)){
+            //Handle turning camera forward same direction as currently facing NORTH
+            Logger.log("Turning camera to direction player is facing: "+player.getFacingDirection());
+            Camera.rotateToTile(new Tile(player.getX(),player.getY()+2,player.getZ()));
+            Sleep.sleepUntil(()->player.getFacingDirection().equals(Direction.NORTH),700,1200);
+        }
+        if(player.getFacingDirection().equals(Direction.SOUTH)){
+            //Handle turning camera forward same direction as currently facing SOUTH
+            Logger.log("Turning camera to direction player is facing: "+player.getFacingDirection());
+            Camera.rotateToTile(new Tile(player.getX(),player.getY()-2,player.getZ()));
+            Sleep.sleepUntil(()->player.getFacingDirection().equals(Direction.SOUTH),700,1200);
+        }
+        if(player.getFacingDirection().equals(Direction.EAST)){
+            //Handle turning camera forward same direction as currently facing EAST
+            Logger.log("Turning camera to direction player is facing: "+player.getFacingDirection());
+            Camera.rotateToTile(new Tile(player.getX()+2,player.getY(),player.getZ()));
+            Sleep.sleepUntil(()->player.getFacingDirection().equals(Direction.EAST),700,1200);
+        }
+        if(player.getFacingDirection().equals(Direction.WEST)){
+            //Handle turning camera forward same direction as currently facing WEST
+            Logger.log("Turning camera to direction player is facing: "+player.getFacingDirection());
+            Camera.rotateToTile(new Tile(player.getX()-2,player.getY(),player.getZ()));
+            Sleep.sleepUntil(()->player.getFacingDirection().equals(Direction.WEST),700,1200);
+        }
+    }
+    public NPC searchForNearestNPCWithName(String name){
+        return NPCs.closest(new Filter<NPC>() {
+            @Override
+            public boolean match(NPC npc) {
+                return npc != null && npc.getName().equalsIgnoreCase(name) && npc.getActions().length > 0;
+            }
+        });
+    }
+    public GameObject searchForNearestGameObjectWithName(String name, Tile tileObjectIsLocatedOn){
+        return GameObjects.closest(new Filter<GameObject>() {
+            @Override
+            public boolean match(GameObject gameObject1) {
+                return gameObject1 != null && gameObject1.getName().equals(name) && gameObject1.getActions().length > 0 && gameObject1.getTile().equals(tileObjectIsLocatedOn);
+            }
+        });
+    }
+    public void turnToEntity(Entity entity){
+        if(!entity.isOnScreen()){ //If Entity is not on the Screen turn the camera to face it
+            Logger.log("Turning camera to face: "+entity.getName()+" Located at position: "+entity.getCenterPoint());
+            Camera.rotateToEntity(entity);
         }
     }
 
