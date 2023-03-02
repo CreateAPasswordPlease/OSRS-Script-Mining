@@ -5,6 +5,8 @@ import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Tile;
+import org.dreambot.api.methods.skills.Skill;
+import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.script.AbstractScript;
 import org.dreambot.api.script.Category;
@@ -22,6 +24,7 @@ import java.util.Random;
         author = "Blank0001",
         version = 1.0, category = Category.MINING, image = "")
 
+//yellowdog001@gmail.com Matthew666
 
 public class WoodcuttingScript extends AbstractScript {
     public void onStart(){
@@ -44,7 +47,20 @@ public class WoodcuttingScript extends AbstractScript {
         }
         return Inventory.isEmpty();
     }
-
+    private String getTree(){
+        if(Skills.getRealLevel(Skill.WOODCUTTING) < 15 ){
+            return "tree";
+        }
+        if(Skills.getRealLevel(Skill.WOODCUTTING) < 30){
+            return "Oak";
+        }
+        if(Skills.getRealLevel(Skill.WOODCUTTING) >= 30){
+            return "Willow";
+        }
+        else{
+            return "";
+        }
+    }
 
     @Override
     public int onLoop() {
@@ -57,14 +73,18 @@ public class WoodcuttingScript extends AbstractScript {
             if(Dialogues.canContinue()){
                 Dialogues.continueDialogue();
             }
-            gh.turnToEntity(GameObjects.closest("Willow"));
-            Mouse.click(GameObjects.closest("Willow"));
-            Sleep.sleep(400,900);
+            gh.turnToEntity(GameObjects.closest(getTree()));
+            Mouse.click(GameObjects.closest(getTree()));
+            Sleep.sleep(650,2350);
         }
         if(player().isAnimating()){
-            Mouse.moveMouseOutsideScreen();
-            Sleep.sleep(20000,60000);
-            Logger.log("Going AFK for 20 - 60 seconds");
+            if(getTree().equals("tree")){
+                Sleep.sleep(400,900);
+            }else{
+                Mouse.moveOutsideScreen();
+                Sleep.sleep(20000,60000);
+                Logger.log("Going AFK for 20 - 60 seconds");
+            }
         }
         if(Inventory.isFull()){
             dropLogs();
