@@ -54,11 +54,11 @@ public class WoodcuttingScript extends AbstractScript {
         if(Skills.getRealLevel(Skill.WOODCUTTING) < 30){
             return "Oak";
         }
-        if(Skills.getRealLevel(Skill.WOODCUTTING) >= 30){
+        if(Skills.getRealLevel(Skill.WOODCUTTING) < 60){
             return "Willow";
         }
         else{
-            return "";
+            return "Yew";
         }
     }
 
@@ -82,8 +82,8 @@ public class WoodcuttingScript extends AbstractScript {
                 Sleep.sleep(400,900);
             }else{
                 Mouse.moveOutsideScreen();
-                Sleep.sleep(20000,60000);
-                Logger.log("Going AFK for 20 - 60 seconds");
+                Sleep.sleep(20000,40000);
+                Logger.log("Going AFK for 20 - 50 seconds");
             }
         }
         if(Inventory.isFull()){

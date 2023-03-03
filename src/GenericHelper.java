@@ -12,11 +12,14 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.*;
 import org.dreambot.api.wrappers.interactive.util.Direction;
 
+import java.util.Random;
+
 
 public class GenericHelper {
     private int mouseSpeed;
     private int howManyLevels;
     private int runThreshold;
+    private Random rand = new Random();
 
     public GenericHelper(){
         this.mouseSpeed = 80;
@@ -142,7 +145,9 @@ public class GenericHelper {
     }
     public void walkToLocation(Area location){
         Tile randomTileFromLocation = location.getCenter();
-//        turnCameraDirectionPlayerIsFacing(Players.getLocal());
+        if(rand.nextInt(100)>70){
+            turnCameraDirectionPlayerIsFacing(Players.getLocal());
+        }
         if(randomTileFromLocation.distance()>5 && Walking.shouldWalk()){
             Walking.walk(randomTileFromLocation);
         }
@@ -151,5 +156,22 @@ public class GenericHelper {
         }else{
 //            Sleep.sleep(2500,3500);
         }
+    }
+    public void walkToExactTile(Tile tile){
+        Tile randomTileFromAreaOfTile = tile.getArea(8).getRandomTile();
+        if(randomTileFromAreaOfTile.distance()>5 && Walking.shouldWalk()){
+            if(rand.nextInt(100)>70){
+                turnCameraDirectionPlayerIsFacing(Players.getLocal());
+            }
+            Walking.walk(randomTileFromAreaOfTile);
+        }else{
+            Walking.walk(tile);
+        }
+    }
+    public void antiRandomCheckingNearbyPlayers(){
+        //Logic to right click nearby players
+    }
+    public void customClick(){
+        //Customized click with random clicks
     }
 }
