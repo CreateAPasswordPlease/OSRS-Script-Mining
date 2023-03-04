@@ -44,12 +44,24 @@ public class WoodcuttingScript extends AbstractScript {
             Logger.log("Dropping Inventory");
             if(getTree().equalsIgnoreCase("tree")){
                 Inventory.dropAll("Logs");
+                if(Inventory.contains("Logs")){
+                    //Second check
+                    Inventory.dropAll("Logs");
+                }
             }
             if(getTree().equalsIgnoreCase("oak")){
                 Inventory.dropAll("Oak logs");
+                if(Inventory.contains("Oak logs")){
+                    //Second check
+                    Inventory.dropAll("Oak logs");
+                }
             }
             if(getTree().equalsIgnoreCase("willow")){
                 Inventory.dropAll("Willow logs");
+                if(Inventory.contains("Willow logs")){
+                    //Second check
+                    Inventory.dropAll("Willow logs");
+                }
             }
             Sleep.sleep(500,3000);
         }
