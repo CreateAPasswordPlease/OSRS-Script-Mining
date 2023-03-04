@@ -42,7 +42,15 @@ public class WoodcuttingScript extends AbstractScript {
     private boolean dropLogs(){
         if(Inventory.isFull()){
             Logger.log("Dropping Inventory");
-            Inventory.dropAll();
+            if(getTree().equalsIgnoreCase("tree")){
+                Inventory.dropAll("Logs");
+            }
+            if(getTree().equalsIgnoreCase("oak")){
+                Inventory.dropAll("Oak logs");
+            }
+            if(getTree().equalsIgnoreCase("willow")){
+                Inventory.dropAll("Willow logs");
+            }
             Sleep.sleep(500,3000);
         }
         return Inventory.isEmpty();
@@ -92,5 +100,4 @@ public class WoodcuttingScript extends AbstractScript {
 
         return 350;
     }
-
 }

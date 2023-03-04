@@ -160,7 +160,8 @@ public class GenericHelper {
     public void walkToExactTile(Tile tile){
         Tile randomTileFromAreaOfTile = tile.getArea(8).getRandomTile();
         if(randomTileFromAreaOfTile.distance()>5 && Walking.shouldWalk()){
-            if(rand.nextInt(100)>70){
+            if(rand.nextInt(100)>95){
+                Logger.log("Turning forward....");
                 turnCameraDirectionPlayerIsFacing(Players.getLocal());
             }
             Walking.walk(randomTileFromAreaOfTile);
