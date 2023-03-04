@@ -9,6 +9,11 @@ public class  LocationConstants {
     static final Tile F2PMININGCOPPERTILE2 = new Tile(3289,3362,0);
     static final Tile F2PMININGIRON1 = new Tile(3286,3368,0);
     static final Tile F2PMININGTIN1 = new Tile(3282,3363,0);
+    static final Tile LUMBRIDGEBANK = new Tile(3209,3219,2);
+    static final Tile LUMBRIDGEYEW = new Tile(3248,3201,0);
+
+
+
 
 
 }
