@@ -129,7 +129,7 @@ public class CombatMasterScript extends AbstractScript {
             if(LocationConstants.CHICKENS.distance()<8){
                 return true;
             }
-            gh.walkToExactTile(LocationConstants.CHICKENS,10);
+            gh.walkToExactTile(LocationConstants.CHICKENS,6);
             if(LocationConstants.CHICKENS.distance()<8){
                 return true;
             }
@@ -138,7 +138,7 @@ public class CombatMasterScript extends AbstractScript {
             if(LocationConstants.COWS.distance()<8){
                 return true;
             }
-            gh.walkToExactTile(LocationConstants.COWS,10);
+            gh.walkToExactTile(LocationConstants.COWS,6);
             if(LocationConstants.COWS.distance()<8){
                 return true;
             }
@@ -159,14 +159,6 @@ public class CombatMasterScript extends AbstractScript {
     @Override
     public int onLoop() {
 
-
-        if(rand.nextInt(100)>97){
-            //Perform a random act
-            //If player is still animating send the mouse off the screen again
-            //If player isn't animating and the tree is not showing send the mouse off the screen again
-            //If the player isn't animating and the tree is showing and inventory isn't full then slap that tree
-            Logger.log("WOULD'VE PERFORMED A RANDOM ACT");
-        }
         if(gh.accountIsNew()){
             gh.walkToExactTile(LocationConstants.LUMBRIDGEBANK,3);
             if(LocationConstants.LUMBRIDGEBANK.distance() < 5){
@@ -190,7 +182,7 @@ public class CombatMasterScript extends AbstractScript {
         if(!gh.accountIsNew() && !isAccountCombatReady()){
             //GO GET THE TRAINING SWORD AND SHIELD
             if(LocationConstants.COMBATTUTORS.distance()>9){
-                gh.walkToExactTile(LocationConstants.COMBATTUTORS,6);
+                gh.walkToExactTile(LocationConstants.COMBATTUTORS,4);
             }
             gh.turnToEntity(gh.searchForNearestNPCWithName("Melee combat tutor"));
             gh.searchForNearestNPCWithName("Melee combat tutor").interact();
@@ -225,7 +217,14 @@ public class CombatMasterScript extends AbstractScript {
                 trainCombat(setTrainingArea());
             }
             while(player().isInCombat() || player().isMoving()){
-                Sleep.sleep(1500,3000);
+                Sleep.sleep(500,1500);
+                if(rand.nextInt(100)==98){
+                    //Perform a random act
+                    //If player is still animating send the mouse off the screen again
+                    //If player isn't animating and the tree is not showing send the mouse off the screen again
+                    //If the player isn't animating and the tree is showing and inventory isn't full then slap that tree
+                    Logger.log("WOULD'VE PERFORMED A RANDOM ACT");
+                }
                 Logger.log("Still in combat or moving sleeping for 1.5 - 3 seconds");
             }
         }

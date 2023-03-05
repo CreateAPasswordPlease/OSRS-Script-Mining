@@ -7,6 +7,10 @@ import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.*;
+import org.dreambot.api.methods.skills.Skill;
+import org.dreambot.api.methods.skills.Skills;
+import org.dreambot.api.methods.tabs.Tab;
+import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
@@ -87,25 +91,25 @@ public class GenericHelper {
         if(player.getFacingDirection().equals(Direction.NORTH)){
             //Handle turning camera forward same direction as currently facing NORTH
             Logger.log("Turning camera to direction player is facing: "+player.getFacingDirection());
-            Camera.rotateToTile(new Tile(player.getX(),player.getY()+2,player.getZ()));
+            Camera.keyboardRotateToTile(new Tile(player.getX(),player.getY()+2,player.getZ()));
             Sleep.sleepUntil(()->player.getFacingDirection().equals(Direction.NORTH),700,1200);
         }
         if(player.getFacingDirection().equals(Direction.SOUTH)){
             //Handle turning camera forward same direction as currently facing SOUTH
             Logger.log("Turning camera to direction player is facing: "+player.getFacingDirection());
-            Camera.rotateToTile(new Tile(player.getX(),player.getY()-2,player.getZ()));
+            Camera.keyboardRotateToTile(new Tile(player.getX(),player.getY()-2,player.getZ()));
             Sleep.sleepUntil(()->player.getFacingDirection().equals(Direction.SOUTH),700,1200);
         }
         if(player.getFacingDirection().equals(Direction.EAST)){
             //Handle turning camera forward same direction as currently facing EAST
             Logger.log("Turning camera to direction player is facing: "+player.getFacingDirection());
-            Camera.rotateToTile(new Tile(player.getX()+2,player.getY(),player.getZ()));
+            Camera.keyboardRotateToTile(new Tile(player.getX()+2,player.getY(),player.getZ()));
             Sleep.sleepUntil(()->player.getFacingDirection().equals(Direction.EAST),700,1200);
         }
         if(player.getFacingDirection().equals(Direction.WEST)){
             //Handle turning camera forward same direction as currently facing WEST
             Logger.log("Turning camera to direction player is facing: "+player.getFacingDirection());
-            Camera.rotateToTile(new Tile(player.getX()-2,player.getY(),player.getZ()));
+            Camera.keyboardRotateToTile(new Tile(player.getX()-2,player.getY(),player.getZ()));
             Sleep.sleepUntil(()->player.getFacingDirection().equals(Direction.WEST),700,1200);
         }
     }
@@ -161,7 +165,7 @@ public class GenericHelper {
     public void walkToExactTile(Tile tile, int AreaRadius){
         Tile randomTileFromAreaOfTile = tile.getArea(AreaRadius).getRandomTile();
         if(randomTileFromAreaOfTile.distance()>5 && Walking.shouldWalk()){
-            if(rand.nextInt(100)>95){
+            if(rand.nextInt(100)>93){
                 Logger.log("Turning forward....");
                 turnCameraDirectionPlayerIsFacing(Players.getLocal());
             }
@@ -173,16 +177,10 @@ public class GenericHelper {
             }
         }
         if(Walking.isRunEnabled()){
-            Sleep.sleep(800,1600);
+            Sleep.sleep(300,900);
         }else{
-            Sleep.sleep(1600,3200);
+            Sleep.sleep(300,1300);
         }
-    }
-    public void antiRandomCheckingNearbyPlayers(){
-        //Logic to right click nearby players
-    }
-    public void customClick(){
-        //Customized click with random clicks
     }
     public boolean accountIsNew(){
         //Logic to check if account is brand new
@@ -197,4 +195,28 @@ public class GenericHelper {
         }
         return false;
     }
+
+    //Random acts
+    public void antiRandomCheckingNearbyPlayers(){
+        //Logic to right click nearby players
+    }
+    public void customClick(){
+        //Customized click with random clicks
+    }
+    public void skillCheck(Skill skillToCheck){
+        if(!Tabs.isOpen(Tab.SKILLS)){
+            Tabs.open(Tab.SKILLS);
+            Sleep.sleep(700,1400);
+        }else{
+            Skills.hoverSkill(skillToCheck);
+            if(Players.getLocal().isInCombat() || Players.getLocal().isAnimating()){
+                Sleep.sleep(1700,3300);
+            }else{
+                Sleep.sleep(500,1000);
+            }
+        }
+        //In the end switch back to the inventory
+        Tabs.open(Tab.INVENTORY);
+    }
+
 }

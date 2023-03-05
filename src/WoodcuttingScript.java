@@ -1,30 +1,29 @@
 import org.dreambot.api.input.Mouse;
+import org.dreambot.api.methods.ViewportTools;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
 import org.dreambot.api.methods.dialogues.Dialogues;
+import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
-import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
-import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.script.AbstractScript;
 import org.dreambot.api.script.Category;
 import org.dreambot.api.script.ScriptManager;
 import org.dreambot.api.script.ScriptManifest;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
-import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.interactive.Player;
-import sun.font.Script;
 
 import java.awt.*;
+import java.awt.event.PaintEvent;
 import java.util.Random;
 
-@ScriptManifest(name = "Woodcutting Script v1.09",
+@ScriptManifest(name = "Woodcutting Script v1.2",
         description = "A simple F2P Woodcutting script focused on leveling",
         author = "Blank0001",
         version = 1.0, category = Category.MINING, image = "")
@@ -33,7 +32,19 @@ import java.util.Random;
 
 public class WoodcuttingScript extends AbstractScript {
     public void onStart(){
-        Logger.log("Welcome to Mining 101 script v1.03");
+        Logger.log("Welcome to Woodcutting 101 script v1.2");
+        startTime = System.currentTimeMillis(); //save current number of system millis elapsed (long value)
+
+    }
+    @Override
+    public void onPaint(Graphics2D g) {
+        String experienceGainedText = "Elapsed Time: "+getElapsedTimeAsString();
+        String logsCut = "Yew logs cut: "+cutLogs();
+        String moneyMade = "Money made: "+moneyMadeSoFar();
+        // Now we'll draw the text on the canvas at (5, 35). (0, 0) is the top left of the canvas.
+        g.drawString(experienceGainedText, 5, 35);
+        g.drawString(logsCut, 5, 55);
+        g.drawString(moneyMade, 5, 75);
     }
     private Player player(){
         return Players.getLocal();
@@ -41,9 +52,55 @@ public class WoodcuttingScript extends AbstractScript {
     GenericHelper gh = new GenericHelper();
     Player localPlayer = Players.getLocal();
     Random rand = new Random();
-    int upperbound = 100;
-    int lastTinMined = 99;
+    private long startTime = 0;
+    private int startingExperience = Skills.getExperience(Skill.WOODCUTTING);
 
+    private boolean failSafe(){
+        final int minutes = (int)((getElapsedTime()));
+        if(minutes > 18000000){
+            return true;
+        }
+        return false;
+    }
+    private String cutLogs(){
+        int numberOfYewsCut = (Skills.getExperience(Skill.WOODCUTTING) - startingExperience)/175;
+        return String.valueOf(numberOfYewsCut);
+    }
+    private String moneyMadeSoFar(){
+        return String.valueOf(Double.valueOf(cutLogs())*278);
+    }
+    private String getElapsedTimeAsString() {
+        return makeTimeString(getElapsedTime()); //make a formatted string from a long value
+    }
+    private long getElapsedTime() {
+        return System.currentTimeMillis() - startTime; //return elapsed millis since start of script
+    }
+    private String makeTimeString(long ms) {
+        final int seconds = (int)(ms / 1000) % 60;
+        final int minutes = (int)((ms / (1000 * 60)) % 60);
+        final int hours = (int)((ms / (1000 * 60 * 60)) % 24);
+        final int days = (int)((ms / (1000 * 60 * 60 * 24)) % 7);
+        final int weeks = (int)(ms / (1000 * 60 * 60 * 24 * 7));
+        if (weeks > 0) {
+            return String.format("%02dw %03dd %02dh %02dm %02ds", weeks, days, hours, minutes, seconds);
+        }
+        if (weeks == 0 && days > 0) {
+            return String.format("%03dd %02dh %02dm %02ds", days, hours, minutes, seconds);
+        }
+        if (weeks == 0 && days == 0 && hours > 0) {
+            return String.format("%02dh %02dm %02ds", hours, minutes, seconds);
+        }
+        if (weeks == 0 && days == 0 && hours == 0 && minutes > 0) {
+            return String.format("%02dm %02ds", minutes, seconds);
+        }
+        if (weeks == 0 && days == 0 && hours == 0 && minutes == 0) {
+            return String.format("%02ds", seconds);
+        }
+        if (weeks == 0 && days == 0 && hours == 0 && minutes == 0 && seconds == 0) {
+            return String.format("%04dms", ms);
+        }
+        return "00";
+    }
     private boolean dropLogs(){
         if(Inventory.isFull()){
             Logger.log("Dropping Inventory");
@@ -76,7 +133,7 @@ public class WoodcuttingScript extends AbstractScript {
         return Inventory.isEmpty();
     }
     private boolean bankLogs(){
-        gh.walkToExactTile(LocationConstants.LUMBRIDGEBANK,3);
+        gh.walkToExactTile(LocationConstants.LUMBRIDGEBANK,1);
         if(LocationConstants.LUMBRIDGEBANK.distance() < 5){
             gh.turnToEntity(GameObjects.closest("Bank booth"));
             Mouse.click(GameObjects.closest("Bank booth"));
@@ -116,14 +173,20 @@ public class WoodcuttingScript extends AbstractScript {
     public int onLoop() {
 
 
+
+        if(failSafe()){
+            ScriptManager.getScriptManager().stop();
+            Logger.log("Script has been on for more than 5 hours straight stopping....");
+        }
         if(rand.nextInt(100)>97){
             //Perform a random act
             //If player is still animating send the mouse off the screen again
             //If player isn't animating and the tree is not showing send the mouse off the screen again
             //If the player isn't animating and the tree is showing and inventory isn't full then slap that tree
+
         }
         if(LocationConstants.LUMBRIDGEYEW.distance()> 7 && !Inventory.isFull()){
-            gh.walkToExactTile(LocationConstants.LUMBRIDGEYEW.getTile(),5);
+            gh.walkToExactTile(LocationConstants.LUMBRIDGEYEW.getTile(),2);
         }
         if(Inventory.isFull()){
             bankLogs();
@@ -133,6 +196,14 @@ public class WoodcuttingScript extends AbstractScript {
                 Dialogues.continueDialogue();
             }
             try{
+                if(Camera.getZoom()>750){
+                    Camera.setZoom(rand.nextInt(150)+575);
+                }
+                //MAKE CODE HERE FOR DEALING WITH THE VIEW OF THE YEW TREE
+                //Make sure its actually properly in view when trying to cut it
+                //
+                //
+                //
                 Sleep.sleep(400,2000);
                 gh.turnToEntity(GameObjects.closest(getTree()));
                 Mouse.click(GameObjects.closest(getTree()));
