@@ -76,7 +76,7 @@ public class WoodcuttingScript extends AbstractScript {
         return Inventory.isEmpty();
     }
     private boolean bankLogs(){
-        gh.walkToExactTile(LocationConstants.LUMBRIDGEBANK);
+        gh.walkToExactTile(LocationConstants.LUMBRIDGEBANK,3);
         if(LocationConstants.LUMBRIDGEBANK.distance() < 5){
             gh.turnToEntity(GameObjects.closest("Bank booth"));
             Mouse.click(GameObjects.closest("Bank booth"));
@@ -122,7 +122,7 @@ public class WoodcuttingScript extends AbstractScript {
             //If the player isn't animating and the tree is showing and inventory isn't full then slap that tree
         }
         if(LocationConstants.LUMBRIDGEYEW.distance()> 7 && !Inventory.isFull()){
-            gh.walkToExactTile(LocationConstants.LUMBRIDGEYEW.getTile());
+            gh.walkToExactTile(LocationConstants.LUMBRIDGEYEW.getTile(),5);
         }
         if(Inventory.isFull()){
             bankLogs();

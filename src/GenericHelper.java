@@ -157,8 +157,8 @@ public class GenericHelper {
 //            Sleep.sleep(2500,3500);
         }
     }
-    public void walkToExactTile(Tile tile){
-        Tile randomTileFromAreaOfTile = tile.getArea(3).getRandomTile();
+    public void walkToExactTile(Tile tile, int AreaRadius){
+        Tile randomTileFromAreaOfTile = tile.getArea(AreaRadius).getRandomTile();
         if(randomTileFromAreaOfTile.distance()>5 && Walking.shouldWalk()){
             if(rand.nextInt(100)>95){
                 Logger.log("Turning forward....");
