@@ -1,4 +1,5 @@
 import org.dreambot.api.input.Mouse;
+import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.filter.Filter;
 import org.dreambot.api.methods.input.Camera;
@@ -168,10 +169,8 @@ public class GenericHelper {
                 Logger.log("Tile Selected: "+randomTileFromAreaOfTile);
                 Walking.walk(randomTileFromAreaOfTile);
             }else{
-                Walking.walk(tile);
+                Logger.log("Can't reach tile: "+randomTileFromAreaOfTile);
             }
-        }else{
-            Walking.walk(tile);
         }
         if(Walking.isRunEnabled()){
             Sleep.sleep(800,1600);
@@ -184,5 +183,18 @@ public class GenericHelper {
     }
     public void customClick(){
         //Customized click with random clicks
+    }
+    public boolean accountIsNew(){
+        //Logic to check if account is brand new
+        if(Inventory.contains("Bronze axe")
+                && Inventory.contains("Bronze pickaxe")
+                && Inventory.contains("Tinderbox")
+                && Inventory.contains("Small fishing net") && Inventory.contains("Shrimps")
+                && Inventory.contains("Bronze dagger")
+                && Inventory.contains("Bread"))
+        {
+            return true;
+        }
+        return false;
     }
 }
