@@ -127,7 +127,7 @@ public class WoodcuttingScript extends AbstractScript {
         if(Inventory.isFull()){
             bankLogs();
         }
-        if(!player().isAnimating() && !player().isInCombat() && GameObjects.closest(getTree()) != null && !Inventory.isFull()){
+        if(!player().isAnimating() && !player().isInCombat() && GameObjects.closest(getTree()) != null && !Inventory.isFull() && LocationConstants.LUMBRIDGEYEW.distance()< 8){
             if(Dialogues.canContinue()){
                 Dialogues.continueDialogue();
             }
