@@ -41,10 +41,12 @@ public class WoodcuttingScript extends AbstractScript {
         String experienceGainedText = "Elapsed Time: "+getElapsedTimeAsString();
         String logsCut = "Yew logs cut: "+cutLogs();
         String moneyMade = "Money made: "+moneyMadeSoFar();
+        String moneyMadePerHour = "Money made hourly: "+ moneyMadePerHour();
         // Now we'll draw the text on the canvas at (5, 35). (0, 0) is the top left of the canvas.
         g.drawString(experienceGainedText, 5, 35);
         g.drawString(logsCut, 5, 55);
         g.drawString(moneyMade, 5, 75);
+        g.drawString(moneyMadePerHour, 5, 95);
     }
     private Player player(){
         return Players.getLocal();
@@ -64,10 +66,16 @@ public class WoodcuttingScript extends AbstractScript {
     }
     private String cutLogs(){
         int numberOfYewsCut = (Skills.getExperience(Skill.WOODCUTTING) - startingExperience)/175;
-        return String.valueOf(numberOfYewsCut);
+        double result = Math.round(numberOfYewsCut);
+        return String.valueOf(result);
     }
     private String moneyMadeSoFar(){
         return String.valueOf(Double.valueOf(cutLogs())*278);
+    }
+    private String moneyMadePerHour(){
+        double longAsDouble = (double)(getElapsedTime()/1000);
+        double money = Math.round(((Double.parseDouble(cutLogs())*278)/longAsDouble)*60)*60;
+        return String.valueOf(money);
     }
     private String getElapsedTimeAsString() {
         return makeTimeString(getElapsedTime()); //make a formatted string from a long value
@@ -229,6 +237,6 @@ public class WoodcuttingScript extends AbstractScript {
             bankLogs();
         }
 
-        return 350;
+        return rand.nextInt(50)+50;
     }
 }

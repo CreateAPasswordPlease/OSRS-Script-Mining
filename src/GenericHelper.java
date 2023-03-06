@@ -165,7 +165,7 @@ public class GenericHelper {
     public void walkToExactTile(Tile tile, int AreaRadius){
         Tile randomTileFromAreaOfTile = tile.getArea(AreaRadius).getRandomTile();
         if(randomTileFromAreaOfTile.distance()>5 && Walking.shouldWalk()){
-            if(rand.nextInt(100)>93){
+            if(rand.nextInt(100)>90){
                 Logger.log("Turning forward....");
                 turnCameraDirectionPlayerIsFacing(Players.getLocal());
             }
@@ -177,9 +177,9 @@ public class GenericHelper {
             }
         }
         if(Walking.isRunEnabled()){
-            Sleep.sleep(300,900);
+//            Sleep.sleep(300,900);
         }else{
-            Sleep.sleep(300,1300);
+//            Sleep.sleep(300,1300);
         }
     }
     public boolean accountIsNew(){
