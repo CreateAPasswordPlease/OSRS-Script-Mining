@@ -214,7 +214,8 @@ public class WoodcuttingScript extends AbstractScript {
                 //
                 Sleep.sleep(400,2000);
                 gh.turnToEntity(GameObjects.closest(getTree()));
-                Mouse.click(GameObjects.closest(getTree()));
+                GameObjects.closest(getTree()).interact();
+//                Mouse.click(GameObjects.closest(getTree()));
                 if(!Tab.INVENTORY.isOpen()){
                     Tabs.open(Tab.INVENTORY);
                 }
