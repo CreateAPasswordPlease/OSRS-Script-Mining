@@ -132,7 +132,12 @@ public class GenericHelper {
     public void turnToEntity(Entity entity){
         if(!entity.isOnScreen()){ //If Entity is not on the Screen turn the camera to face it
             Logger.log("Turning camera to face: "+entity.getName()+" Located at position: "+entity.getCenterPoint());
-            Camera.rotateToEntity(entity);
+            if(rand.nextInt(100)>75){
+                Camera.keyboardRotateToEntity(entity);
+            }else{
+                Camera.rotateToEntity(entity);
+            }
+
         }
     }
 
