@@ -57,9 +57,11 @@ public class WoodcuttingScript extends AbstractScript {
     private long startTime = 0;
     private int startingExperience = Skills.getExperience(Skill.WOODCUTTING);
 
-    private boolean failSafe(){
+    private boolean failSafe(int timeUntilFailSafeInMinutes){
         final int minutes = (int)((getElapsedTime()));
-        if(minutes > 18000000){
+        int timeUntilQuit = timeUntilFailSafeInMinutes * 60000;
+        if(minutes > timeUntilQuit){
+            Logger.log("Script has been on for more than "+ timeUntilFailSafeInMinutes +" minutes straight stopping....");
             return true;
         }
         return false;
@@ -182,9 +184,8 @@ public class WoodcuttingScript extends AbstractScript {
 
 
 
-        if(failSafe()){
+        if(failSafe(120)){
             ScriptManager.getScriptManager().stop();
-            Logger.log("Script has been on for more than 5 hours straight stopping....");
         }
         if(rand.nextInt(100)>97){
             //Perform a random act
