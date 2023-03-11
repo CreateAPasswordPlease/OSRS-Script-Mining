@@ -192,6 +192,11 @@ public class WoodcuttingScript extends AbstractScript {
             //If player is still animating send the mouse off the screen again
             //If player isn't animating and the tree is not showing send the mouse off the screen again
             //If the player isn't animating and the tree is showing and inventory isn't full then slap that tree
+            if(rand.nextInt(100)>49){
+                gh.performRandomMouseMovement(true);
+            }else{
+                gh.performRandomMouseMovement(false);
+            }
 
         }
         if(LocationConstants.LUMBRIDGEYEW.distance()> 7 && !Inventory.isFull()){

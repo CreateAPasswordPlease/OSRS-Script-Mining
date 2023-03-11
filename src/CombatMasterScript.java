@@ -218,14 +218,18 @@ public class CombatMasterScript extends AbstractScript {
             }
             while(player().isInCombat() || player().isMoving()){
                 Sleep.sleep(500,1500);
-                if(rand.nextInt(100)==98){
+                if(rand.nextInt(100)>95){
                     //Perform a random act
                     //If player is still animating send the mouse off the screen again
                     //If player isn't animating and the tree is not showing send the mouse off the screen again
                     //If the player isn't animating and the tree is showing and inventory isn't full then slap that tree
-                    Logger.log("WOULD'VE PERFORMED A RANDOM ACT");
+                    if(rand.nextInt(100)>49){
+                        gh.performRandomMouseMovement(true);
+                    }else{
+                        gh.performRandomMouseMovement(false);
+                    }
                 }
-                Logger.log("Still in combat or moving sleeping for 1.5 - 3 seconds");
+//                Logger.log("Still in combat or moving sleeping for 1.5 - 3 seconds");
             }
         }
 

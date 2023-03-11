@@ -17,6 +17,7 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.*;
 import org.dreambot.api.wrappers.interactive.util.Direction;
 
+import java.awt.*;
 import java.util.Random;
 
 
@@ -177,6 +178,9 @@ public class GenericHelper {
             if(Walking.canWalk(randomTileFromAreaOfTile)){
                 Logger.log("Tile Selected: "+randomTileFromAreaOfTile);
                 Walking.walk(randomTileFromAreaOfTile);
+                if(rand.nextInt(100)>50){
+                    //Perform a random mouse movement
+                }
             }else{
                 Logger.log("Can't reach tile: "+randomTileFromAreaOfTile);
             }
@@ -202,6 +206,21 @@ public class GenericHelper {
     }
 
     //Random acts
+    public void antiRandomRandomlyCheckNearbyGroundItems(){
+        //Check a ground item nearby within 1 - 10 distance
+        //right click examine rarely
+        //right click, move mouse away, right click again, move mouse away
+        //Pick item up and then drop it
+        //Pick item up hover for 1 - 5 seconds then drop it with right click or shift click
+    }
+    public void antiRandomCheckNpcInCombatWith(){
+        //If player is in combat with the NPC provided perform a random action of checking it out
+        //Examining it
+        //Right-clicking it once and moving mouse away
+        //Right-clicking it twice
+        //Clicking it again
+        //Hovering it for 1-3 seconds then moving mouse away
+    }
     public void antiRandomCheckingNearbyPlayers(){
         //Logic to right click nearby players
     }
@@ -222,6 +241,52 @@ public class GenericHelper {
         }
         //In the end switch back to the inventory
         Tabs.open(Tab.INVENTORY);
+    }
+    public void performRandomMouseMovement(boolean trueForBigMovement){
+        int getCurrentMouseX = Mouse.getX();
+        int getCurrentMouseY = Mouse.getY();
+        if(trueForBigMovement){
+            Logger.log("Performed random act large mouse movement");
+
+            int randomX1 = rand.nextInt(150);
+            if(rand.nextInt(100)>49){
+                randomX1 = randomX1*-1;
+            }
+            int randomX2 = rand.nextInt(100);
+            if(rand.nextInt(100)>50){
+                randomX2 = randomX2*-1;
+            }
+            int randomX3 = rand.nextInt(50);
+            if(rand.nextInt(100)>=50){
+                randomX3 = randomX3*-1;
+            }
+
+            int randomY1 = rand.nextInt(150);
+            if(rand.nextInt(100)>=50){
+                randomY1 = randomY1*-1;
+            }
+
+            int randomY2 = rand.nextInt(100);
+            if(rand.nextInt(100)>=49){
+                randomY2 = randomY2*-1;
+            }
+            int randomY3 = rand.nextInt(50);
+            if(rand.nextInt(100)>=49){
+                randomY3 = randomY3*-1;
+            }
+
+            Point p;
+            if(getCurrentMouseX > -1 && getCurrentMouseY > -1){
+                p = new Point(randomX1 + randomX2 + randomX3, getCurrentMouseY + randomY1 + randomY2 + randomY3);
+            }else{
+                p = new Point(randomX1 + randomX2 + randomX3, randomY1 + randomY2 + randomY3);
+            }
+            Mouse.move(p);
+        }else{
+            Logger.log("Performed random act small mouse movement");
+
+            Mouse.move();
+        }
     }
 
 }
