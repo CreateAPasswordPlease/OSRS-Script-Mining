@@ -223,7 +223,7 @@ public class WoodcuttingScript extends AbstractScript {
                 Logger.log("Cannot find tree or cannot turn to it");
                 Sleep.sleep(5000,10000);
             }
-            Sleep.sleep(650,2350);
+            Sleep.sleep(650,3000);
         }
         if(player().isAnimating() && !Inventory.isFull()){
             if(getTree().equals("tree")){
