@@ -162,33 +162,23 @@ public class GenericHelper {
         if(randomTileFromLocation.distance()>5 && Walking.shouldWalk()){
             Walking.walk(randomTileFromLocation);
         }
-        if(Walking.isRunEnabled()){
-//            Sleep.sleep(1000,2500);
-        }else{
-//            Sleep.sleep(2500,3500);
-        }
     }
     public void walkToExactTile(Tile tile, int AreaRadius){
         Tile randomTileFromAreaOfTile = tile.getArea(AreaRadius).getRandomTile();
         if(randomTileFromAreaOfTile.distance()>5 && Walking.shouldWalk()){
-            if(rand.nextInt(100)>90){
-                Logger.log("Turning forward....");
-                turnCameraDirectionPlayerIsFacing(Players.getLocal());
-            }
             if(Walking.canWalk(randomTileFromAreaOfTile)){
                 Logger.log("Tile Selected: "+randomTileFromAreaOfTile);
                 Walking.walk(randomTileFromAreaOfTile);
+                if(rand.nextInt(100)>90){
+                    Logger.log("Turning forward....");
+                    turnCameraDirectionPlayerIsFacing(Players.getLocal());
+                }
                 if(rand.nextInt(100)>50){
                     //Perform a random mouse movement
                 }
             }else{
                 Logger.log("Can't reach tile: "+randomTileFromAreaOfTile);
             }
-        }
-        if(Walking.isRunEnabled()){
-//            Sleep.sleep(300,900);
-        }else{
-//            Sleep.sleep(300,1300);
         }
     }
     public boolean accountIsNew(){

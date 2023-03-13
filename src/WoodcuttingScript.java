@@ -3,10 +3,12 @@ import org.dreambot.api.methods.ViewportTools;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
+import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
+import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.tabs.Tab;
@@ -178,71 +180,290 @@ public class WoodcuttingScript extends AbstractScript {
             return "Yew";
         }
     }
+    private boolean playerHasAxe(String nameOfAxe){
+        return Inventory.contains(nameOfAxe) || Equipment.contains(nameOfAxe);
+    }
 
     @Override
     public int onLoop() {
 
 
-
-        if(failSafe(120)){
+        if(failSafe(137)){
             ScriptManager.getScriptManager().stop();
         }
-        if(rand.nextInt(100)>97){
-            //Perform a random act
-            //If player is still animating send the mouse off the screen again
-            //If player isn't animating and the tree is not showing send the mouse off the screen again
-            //If the player isn't animating and the tree is showing and inventory isn't full then slap that tree
-            if(rand.nextInt(100)>49){
-                gh.performRandomMouseMovement(true);
-            }else{
-                gh.performRandomMouseMovement(false);
+        if(getTree().equalsIgnoreCase("yew")){
+            if(LocationConstants.LUMBRIDGEYEW.distance()> 7 && !Inventory.isFull()){
+                gh.walkToExactTile(LocationConstants.LUMBRIDGEYEW.getTile(),2);
             }
-
-        }
-        if(LocationConstants.LUMBRIDGEYEW.distance()> 7 && !Inventory.isFull()){
-            gh.walkToExactTile(LocationConstants.LUMBRIDGEYEW.getTile(),2);
-        }
-        if(Inventory.isFull()){
-            bankLogs();
-        }
-        if(!player().isAnimating() && !player().isInCombat() && GameObjects.closest(getTree()) != null && !Inventory.isFull() && LocationConstants.LUMBRIDGEYEW.distance()< 8){
-            if(Dialogues.canContinue()){
-                Dialogues.continueDialogue();
+            if(Inventory.isFull()){
+                bankLogs();
             }
-            try{
-                if(Camera.getZoom()>750){
-                    Camera.setZoom(rand.nextInt(150)+575);
+            if(!player().isAnimating() && !player().isInCombat() && GameObjects.closest(getTree()) != null && !Inventory.isFull() && LocationConstants.LUMBRIDGEYEW.distance()< 8){
+                if(Dialogues.canContinue()){
+                    Dialogues.continueDialogue();
                 }
-                //MAKE CODE HERE FOR DEALING WITH THE VIEW OF THE YEW TREE
-                //Make sure its actually properly in view when trying to cut it
-                //
-                //
-                //
-                Sleep.sleep(400,2000);
-                gh.turnToEntity(GameObjects.closest(getTree()));
-                GameObjects.closest(getTree()).interact();
+                try{
+                    if(Camera.getZoom()>750){
+                        Camera.setZoom(rand.nextInt(150)+575);
+                    }
+                    //MAKE CODE HERE FOR DEALING WITH THE VIEW OF THE YEW TREE
+                    //Make sure its actually properly in view when trying to cut it
+                    //
+                    //
+                    //
+                    Sleep.sleep(400,2000);
+                    if(GameObjects.closest(getTree()).getTile().equals(new Tile(3249,3201,0))){
+                        gh.turnToEntity(GameObjects.closest(getTree()));
+                        GameObjects.closest(getTree()).interact();
+                    }
 //                Mouse.click(GameObjects.closest(getTree()));
-                if(!Tab.INVENTORY.isOpen()){
-                    Tabs.open(Tab.INVENTORY);
+                    if(!Tab.INVENTORY.isOpen()){
+                        Tabs.open(Tab.INVENTORY);
+                    }
+                    if(rand.nextInt(100)>90){
+                        //Perform a random act
+                        //If player is still animating send the mouse off the screen again
+                        //If player isn't animating and the tree is not showing send the mouse off the screen again
+                        //If the player isn't animating and the tree is showing and inventory isn't full then slap that tree
+                        if(rand.nextInt(100)>49){
+                            gh.performRandomMouseMovement(true);
+                        }else{
+                            gh.performRandomMouseMovement(false);
+                        }
+                    }
+                }catch (Exception e){
+                    Logger.log("Cannot find tree or cannot turn to it");
+                    Sleep.sleep(5000,10000);
                 }
-            }catch (Exception e){
-                Logger.log("Cannot find tree or cannot turn to it");
-                Sleep.sleep(5000,10000);
+                Sleep.sleep(650,3000);
             }
-            Sleep.sleep(650,3000);
-        }
-        if(player().isAnimating() && !Inventory.isFull()){
-            if(getTree().equals("tree")){
-                Sleep.sleep(400,900);
-            }else{
-                Mouse.moveOutsideScreen();
-                Sleep.sleep(20000,40000);
-                Logger.log("Going AFK for 20 - 50 seconds");
+            if(player().isAnimating() && !Inventory.isFull()){
+                if(getTree().equals("tree")){
+                    Sleep.sleep(400,900);
+                }else{
+                    Mouse.moveOutsideScreen();
+                    Sleep.sleep(20000,40000);
+                    Logger.log("Going AFK for 20 - 50 seconds");
+                }
+            }
+            if(Inventory.isFull()){
+                bankLogs();
             }
         }
-        if(Inventory.isFull()){
-            bankLogs();
+        if(getTree().equalsIgnoreCase("willow")){
+            //Logic for handling willow
+            if(LocationConstants.LUMBRIDGEWILLOW.distance()> 7 && !Inventory.isFull()){
+                gh.walkToExactTile(LocationConstants.LUMBRIDGEWILLOW.getTile(),2);
+            }
+            if(Inventory.isFull()){
+                dropLogs();
+            }
+            if(!player().isAnimating() && !player().isInCombat() && GameObjects.closest(getTree()) != null && !Inventory.isFull() && LocationConstants.LUMBRIDGEWILLOW.distance()< 8){
+                if(Dialogues.canContinue()){
+                    Dialogues.continueDialogue();
+                }
+                try{
+                    if(Camera.getZoom()>750){
+                        Camera.setZoom(rand.nextInt(150)+575);
+                    }
+                    //MAKE CODE HERE FOR DEALING WITH THE VIEW OF THE YEW TREE
+                    //Make sure its actually properly in view when trying to cut it
+                    //
+                    //
+                    //
+                    Sleep.sleep(400,2000);
+                    if(GameObjects.closest(getTree()).getTile().equals(new Tile(3233,3244,0)) || GameObjects.closest(getTree()).getTile().equals(new Tile(3235,3237,0))){
+                        gh.turnToEntity(GameObjects.closest(getTree()));
+                        GameObjects.closest(getTree()).interact();
+                    }
+//                Mouse.click(GameObjects.closest(getTree()));
+                    if(!Tab.INVENTORY.isOpen()){
+                        Tabs.open(Tab.INVENTORY);
+                    }
+                    if(rand.nextInt(100)>90){
+                        //Perform a random act
+                        //If player is still animating send the mouse off the screen again
+                        //If player isn't animating and the tree is not showing send the mouse off the screen again
+                        //If the player isn't animating and the tree is showing and inventory isn't full then slap that tree
+                        if(rand.nextInt(100)>49){
+                            gh.performRandomMouseMovement(true);
+                        }else{
+                            gh.performRandomMouseMovement(false);
+                        }
+                    }
+                }catch (Exception e){
+                    Logger.log("Cannot find tree or cannot turn to it");
+                    Sleep.sleep(5000,10000);
+                }
+                Sleep.sleep(650,3000);
+            }
+            if(player().isAnimating() && !Inventory.isFull()){
+                if(getTree().equals("tree")){
+                    Sleep.sleep(400,900);
+                }
+                if(getTree().equalsIgnoreCase("willow")){
+                    Mouse.moveOutsideScreen();
+                    Sleep.sleep(15000,35000);
+                    Logger.log("Going AFK for 15 - 35 seconds");
+                }
+                if(getTree().equalsIgnoreCase("oak")){
+                    Mouse.moveOutsideScreen();
+                    Sleep.sleep(15000,35000);
+                    Logger.log("Going AFK for 15 - 35 seconds");
+                }else{
+                    Mouse.moveOutsideScreen();
+                    Sleep.sleep(20000,40000);
+                    Logger.log("Going AFK for 20 - 40 seconds");
+                }
+            }
+            if(Inventory.isFull()){
+                dropLogs();
+            }
         }
+        if(getTree().equalsIgnoreCase("oak")){
+            //Logic for oak
+            if(LocationConstants.LUMBRIDGEOAK.distance()> 7 && !Inventory.isFull()){
+                gh.walkToExactTile(LocationConstants.LUMBRIDGEOAK.getTile(),3);
+            }
+            if(Inventory.isFull()){
+                dropLogs();
+            }
+            if(!player().isAnimating() && !player().isInCombat() && GameObjects.closest(getTree()) != null && !Inventory.isFull() && LocationConstants.LUMBRIDGEOAK.distance()< 8){
+                if(Dialogues.canContinue()){
+                    Dialogues.continueDialogue();
+                }
+                try{
+                    if(Camera.getZoom()>750){
+                        Camera.setZoom(rand.nextInt(150)+575);
+                    }
+                    //MAKE CODE HERE FOR DEALING WITH THE VIEW OF THE YEW TREE
+                    //Make sure its actually properly in view when trying to cut it
+                    //
+                    //
+                    //
+                    Sleep.sleep(400,2000);
+                    if(GameObjects.closest(getTree()).getTile().equals(new Tile(3204,3239,0)) || GameObjects.closest(getTree()).getTile().equals(new Tile(3203,3246,0))){
+                        gh.turnToEntity(GameObjects.closest(getTree()));
+                        GameObjects.closest(getTree()).interact();
+                    }
+//                Mouse.click(GameObjects.closest(getTree()));
+                    if(!Tab.INVENTORY.isOpen()){
+                        Tabs.open(Tab.INVENTORY);
+                    }
+                    if(rand.nextInt(100)>90){
+                        //Perform a random act
+                        //If player is still animating send the mouse off the screen again
+                        //If player isn't animating and the tree is not showing send the mouse off the screen again
+                        //If the player isn't animating and the tree is showing and inventory isn't full then slap that tree
+                        if(rand.nextInt(100)>49){
+                            gh.performRandomMouseMovement(true);
+                        }else{
+                            gh.performRandomMouseMovement(false);
+                        }
+                    }
+                }catch (Exception e){
+                    Logger.log("Cannot find tree or cannot turn to it");
+                    Sleep.sleep(5000,10000);
+                }
+                Sleep.sleep(650,3000);
+            }
+            if(player().isAnimating() && !Inventory.isFull()){
+                if(getTree().equals("tree")){
+                    Sleep.sleep(400,900);
+                }
+                if(getTree().equalsIgnoreCase("willow")){
+                    Mouse.moveOutsideScreen();
+                    Sleep.sleep(15000,35000);
+                    Logger.log("Going AFK for 15 - 35 seconds");
+                }
+                if(getTree().equalsIgnoreCase("oak")){
+                    Mouse.moveOutsideScreen();
+                    Sleep.sleep(15000,35000);
+                    Logger.log("Going AFK for 15 - 35 seconds");
+                }else{
+                    Mouse.moveOutsideScreen();
+                    Sleep.sleep(20000,40000);
+                    Logger.log("Going AFK for 20 - 40 seconds");
+                }
+            }
+            if(Inventory.isFull()){
+                dropLogs();
+            }
+        }
+        if(getTree().equalsIgnoreCase("tree")){
+            if(!playerHasAxe("Bronze axe")){
+                ScriptManager.getScriptManager().stop();
+            }
+            //Logic for tree
+            if(LocationConstants.LUMBRIDGETREES.distance()> 13 && !Inventory.isFull()){
+                gh.walkToExactTile(LocationConstants.LUMBRIDGETREES.getTile(),4);
+            }
+            if(Inventory.isFull()){
+                dropLogs();
+            }
+            if(!player().isAnimating() && !player().isInCombat() && GameObjects.closest(getTree()) != null && !Inventory.isFull() && LocationConstants.LUMBRIDGETREES.distance()< 13){
+                if(Dialogues.canContinue()){
+                    Dialogues.continueDialogue();
+                }
+                try{
+                    if(Camera.getZoom()>750){
+                        Camera.setZoom(rand.nextInt(150)+575);
+                    }
+                    //MAKE CODE HERE FOR DEALING WITH THE VIEW OF THE YEW TREE
+                    //Make sure its actually properly in view when trying to cut it
+                    //
+                    //
+                    //
+                    Sleep.sleep(400,2000);
+                    if(GameObjects.closest(getTree()).getTile().equals(new Tile(3233,3244,0)) || GameObjects.closest(getTree()).getTile().equals(new Tile(3235,3237,0))){
+                        gh.turnToEntity(GameObjects.closest(getTree()));
+                        GameObjects.closest(getTree()).interact();
+                    }
+//                Mouse.click(GameObjects.closest(getTree()));
+                    if(!Tab.INVENTORY.isOpen()){
+                        Tabs.open(Tab.INVENTORY);
+                    }
+                    if(rand.nextInt(100)>90){
+                        //Perform a random act
+                        //If player is still animating send the mouse off the screen again
+                        //If player isn't animating and the tree is not showing send the mouse off the screen again
+                        //If the player isn't animating and the tree is showing and inventory isn't full then slap that tree
+                        if(rand.nextInt(100)>49){
+                            gh.performRandomMouseMovement(true);
+                        }else{
+                            gh.performRandomMouseMovement(false);
+                        }
+                    }
+                }catch (Exception e){
+                    Logger.log("Cannot find tree or cannot turn to it");
+                    Sleep.sleep(5000,10000);
+                }
+                Sleep.sleep(650,3000);
+            }
+            if(player().isAnimating() && !Inventory.isFull()){
+                if(getTree().equals("tree")){
+                    Sleep.sleep(400,900);
+                }
+                if(getTree().equalsIgnoreCase("willow")){
+                    Mouse.moveOutsideScreen();
+                    Sleep.sleep(15000,35000);
+                    Logger.log("Going AFK for 15 - 35 seconds");
+                }
+                if(getTree().equalsIgnoreCase("oak")){
+                    Mouse.moveOutsideScreen();
+                    Sleep.sleep(15000,35000);
+                    Logger.log("Going AFK for 15 - 35 seconds");
+                }else{
+                    Mouse.moveOutsideScreen();
+                    Sleep.sleep(20000,40000);
+                    Logger.log("Going AFK for 20 - 40 seconds");
+                }
+            }
+            if(Inventory.isFull()){
+                dropLogs();
+            }
+        }
+
 
         return rand.nextInt(50)+50;
     }
