@@ -122,6 +122,14 @@ public class WoodcuttingScript extends AbstractScript {
                     //Second check
                     Inventory.dropAll("Logs");
                 }
+                if(Inventory.contains("Oak logs")){
+                    //Second check
+                    Inventory.dropAll("Oak logs");
+                }
+                if(Inventory.contains("Willow logs")){
+                    //Second check
+                    Inventory.dropAll("Willow logs");
+                }
             }
             if(getTree().equalsIgnoreCase("oak")){
                 Inventory.dropAll("Oak logs");
@@ -129,9 +137,29 @@ public class WoodcuttingScript extends AbstractScript {
                     //Second check
                     Inventory.dropAll("Oak logs");
                 }
+                if(Inventory.contains("Logs")){
+                    //Second check
+                    Inventory.dropAll("Logs");
+                }
+                if(Inventory.contains("Oak logs")){
+                    //Second check
+                    Inventory.dropAll("Oak logs");
+                }
+                if(Inventory.contains("Willow logs")){
+                    //Second check
+                    Inventory.dropAll("Willow logs");
+                }
             }
             if(getTree().equalsIgnoreCase("willow")){
                 Inventory.dropAll("Willow logs");
+                if(Inventory.contains("Logs")){
+                    //Second check
+                    Inventory.dropAll("Logs");
+                }
+                if(Inventory.contains("Oak logs")){
+                    //Second check
+                    Inventory.dropAll("Oak logs");
+                }
                 if(Inventory.contains("Willow logs")){
                     //Second check
                     Inventory.dropAll("Willow logs");
